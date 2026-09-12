@@ -1,54 +1,180 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-    <title>追上红哥就打</title>
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #111;
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+}
 
-    <link rel="stylesheet" href="style.css">
-</head>
+#game {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at center, #283048, #111827);
+}
 
-<body>
+#gameCanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+}
 
-<div id="game">
+.top-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
 
-    <div class="top-bar">
-        <div class="title">🥊 追上红哥就打</div>
+    width: 100%;
 
-        <div class="score">
-            得分：<span id="score">0</span>
-        </div>
-    </div>
+    padding: 18px 25px;
 
-    <canvas id="gameCanvas"></canvas>
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-    <div id="message">
-        追上红哥！
-    </div>
+    z-index: 10;
 
-    <!-- 手机控制 -->
-    <div id="mobileControl">
+    color: white;
 
-        <button id="up">▲</button>
+    font-weight: bold;
+}
 
-        <div class="middle">
-            <button id="left">◀</button>
-            <button id="down">▼</button>
-            <button id="right">▶</button>
-        </div>
+.title {
+    font-size: 24px;
+    text-shadow: 0 3px 8px rgba(0,0,0,.5);
+}
 
-    </div>
+.score {
+    font-size: 22px;
+}
 
-    <!-- 开始按钮 -->
-    <button id="startButton">
-        开始游戏
-    </button>
+#message {
+    position: absolute;
 
-</div>
+    left: 50%;
+    top: 50%;
 
-<script src="game.js"></script>
+    transform: translate(-50%, -50%);
 
-</body>
-</html>
+    color: white;
+
+    font-size: 45px;
+    font-weight: bold;
+
+    text-shadow:
+        0 4px 0 #000,
+        0 0 25px red;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 20;
+}
+
+#startButton {
+
+    position: absolute;
+
+    left: 50%;
+    top: 58%;
+
+    transform: translate(-50%, -50%);
+
+    padding: 16px 40px;
+
+    border: none;
+    border-radius: 999px;
+
+    background: #ff3030;
+
+    color: white;
+
+    font-size: 24px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 25px rgba(255,0,0,.4);
+
+    z-index: 30;
+}
+
+#startButton:active {
+    transform: translate(-50%, -50%) scale(.95);
+}
+
+#mobileControl {
+
+    position: absolute;
+
+    bottom: 30px;
+    left: 30px;
+
+    z-index: 30;
+
+    display: none;
+}
+
+#mobileControl button {
+
+    width: 65px;
+    height: 65px;
+
+    border: none;
+
+    border-radius: 18px;
+
+    background: rgba(255,255,255,.2);
+
+    color: white;
+
+    font-size: 25px;
+
+    backdrop-filter: blur(8px);
+
+    margin: 4px;
+
+    touch-action: none;
+}
+
+#mobileControl button:active {
+    background: rgba(255,60,60,.7);
+}
+
+.middle {
+    display: flex;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+
+    .title {
+        font-size: 18px;
+    }
+
+    .score {
+        font-size: 18px;
+    }
+
+    #mobileControl {
+        display: block;
+    }
+
+    #message {
+        font-size: 38px;
+    }
+}
