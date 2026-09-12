@@ -1,30 +1,18 @@
-const canvas =
-    document.getElementById("gameCanvas");
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
 
-const ctx =
-    canvas.getContext("2d");
+const scoreText = document.getElementById("score");
+const message = document.getElementById("message");
+const startButton = document.getElementById("startButton");
 
-const scoreText =
-    document.getElementById("score");
+const joystick = document.getElementById("joystick");
+const joystickKnob = document.getElementById("joystickKnob");
 
-const message =
-    document.getElementById("message");
-
-const startButton =
-    document.getElementById("startButton");
-
-const joystick =
-    document.getElementById("joystick");
-
-const joystickKnob =
-    document.getElementById("joystickKnob");
-
-const attackButton =
-    document.getElementById("attackButton");
+const attackButton = document.getElementById("attackButton");
 
 
 // ======================================================
-// 画布尺寸
+// 画布
 // ======================================================
 
 let W = window.innerWidth;
@@ -61,7 +49,7 @@ const player = {
 
     y: H / 2,
 
-    radius: 30,
+    radius: 32,
 
     speed: 340
 
@@ -93,32 +81,45 @@ const hongGe = {
 
 // ======================================================
 // 红哥图片
-// 文件必须和 game.js 在同一目录
-// 名字必须是 boy.jpg
 // ======================================================
 
-const hongGeImage =
-    new Image();
+const hongGeImage = new Image();
 
-hongGeImage.src =
-    "boy.jpg";
+hongGeImage.src = "boy.jpg";
 
-
-// 图片加载成功
 hongGeImage.onload = function () {
 
-    console.log(
-        "boy.jpg 加载成功"
+    console.log("boy.jpg 加载成功");
+
+};
+
+hongGeImage.onerror = function () {
+
+    console.error(
+        "boy.jpg 加载失败，请检查文件名和位置"
     );
 
 };
 
 
-// 图片加载失败
-hongGeImage.onerror = function () {
+// ======================================================
+// 玩家图片
+// ======================================================
+
+const playerImage = new Image();
+
+playerImage.src = "player.jpg";
+
+playerImage.onload = function () {
+
+    console.log("player.jpg 加载成功");
+
+};
+
+playerImage.onerror = function () {
 
     console.error(
-        "boy.jpg 加载失败，请检查图片名称和位置"
+        "player.jpg 加载失败，请检查文件名和位置"
     );
 
 };
@@ -131,45 +132,37 @@ hongGeImage.onerror = function () {
 const keys = {};
 
 
-// 按下
-window.addEventListener(
-    "keydown",
-    function (e) {
+// 键盘按下
+window.addEventListener("keydown", function (e) {
 
-        const key =
-            e.key.toLowerCase();
+    const key = e.key.toLowerCase();
 
-        keys[key] = true;
+    keys[key] = true;
 
 
-        // 空格 / J 攻击
-        if (
-            e.code === "Space" ||
-            key === "j"
-        ) {
+    // 空格 / J 攻击
+    if (
+        e.code === "Space" ||
+        key === "j"
+    ) {
 
-            attackPressed = true;
+        attackPressed = true;
 
-            e.preventDefault();
-
-        }
+        e.preventDefault();
 
     }
-);
+
+});
 
 
-// 松开
-window.addEventListener(
-    "keyup",
-    function (e) {
+// 键盘松开
+window.addEventListener("keyup", function (e) {
 
-        const key =
-            e.key.toLowerCase();
+    const key = e.key.toLowerCase();
 
-        keys[key] = false;
+    keys[key] = false;
 
-    }
-);
+});
 
 
 // ======================================================
@@ -185,27 +178,22 @@ let joystickY = 0;
 const joystickMaxDistance = 39;
 
 
-// ------------------------------------------------------
+// ======================================================
 // 更新摇杆
-// ------------------------------------------------------
+// ======================================================
 
-function updateJoystick(
-    clientX,
-    clientY
-) {
+function updateJoystick(clientX, clientY) {
 
     const rect =
         joystick.getBoundingClientRect();
 
 
     const centerX =
-        rect.left +
-        rect.width / 2;
+        rect.left + rect.width / 2;
 
 
     const centerY =
-        rect.top +
-        rect.height / 2;
+        rect.top + rect.height / 2;
 
 
     let dx =
@@ -223,7 +211,7 @@ function updateJoystick(
         );
 
 
-    // 限制最大范围
+    // 限制摇杆最大距离
 
     if (
         distance >
@@ -245,14 +233,14 @@ function updateJoystick(
 
 
     joystickX =
-        dx /
-        joystickMaxDistance;
+        dx / joystickMaxDistance;
 
 
     joystickY =
-        dy /
-        joystickMaxDistance;
+        dy / joystickMaxDistance;
 
+
+    // 摇杆视觉位置
 
     joystickKnob.style.transform =
         `translate(
@@ -263,9 +251,9 @@ function updateJoystick(
 }
 
 
-// ------------------------------------------------------
-// 摇杆开始
-// ------------------------------------------------------
+// ======================================================
+// 摇杆触摸开始
+// ======================================================
 
 joystick.addEventListener(
     "touchstart",
@@ -295,9 +283,9 @@ joystick.addEventListener(
 );
 
 
-// ------------------------------------------------------
+// ======================================================
 // 摇杆移动
-// ------------------------------------------------------
+// ======================================================
 
 joystick.addEventListener(
     "touchmove",
@@ -325,9 +313,9 @@ joystick.addEventListener(
 );
 
 
-// ------------------------------------------------------
+// ======================================================
 // 摇杆结束
-// ------------------------------------------------------
+// ======================================================
 
 joystick.addEventListener(
     "touchend",
@@ -351,9 +339,9 @@ joystick.addEventListener(
 );
 
 
-// ------------------------------------------------------
+// ======================================================
 // 摇杆取消
-// ------------------------------------------------------
+// ======================================================
 
 joystick.addEventListener(
     "touchcancel",
@@ -373,7 +361,7 @@ joystick.addEventListener(
 
 
 // ======================================================
-// 手机攻击
+// 手机攻击按钮
 // ======================================================
 
 function mobileAttack(e) {
@@ -390,6 +378,7 @@ function mobileAttack(e) {
 
 
 // 手机触摸
+
 attackButton.addEventListener(
     "touchstart",
     mobileAttack,
@@ -400,6 +389,7 @@ attackButton.addEventListener(
 
 
 // 鼠标点击
+
 attackButton.addEventListener(
     "mousedown",
     mobileAttack
@@ -422,23 +412,25 @@ function startGame() {
 
     score = 0;
 
-    scoreText.textContent =
-        "0";
+    scoreText.textContent = "0";
 
-    startButton.style.display =
-        "none";
+    startButton.style.display = "none";
 
-    message.style.opacity =
-        "0";
+    message.style.opacity = "0";
 
+
+    // 玩家初始位置
 
     player.x =
         W / 2 - 140;
 
-
     player.y =
         H / 2;
 
+
+    // 重置摇杆
+
+    joystickActive = false;
 
     joystickX = 0;
 
@@ -448,10 +440,14 @@ function startGame() {
         "translate(-50%, -50%)";
 
 
+    // 重置攻击
+
     attackPressed = false;
 
     attackCooldown = 0;
 
+
+    // 生成红哥
 
     spawnHongGe();
 
@@ -470,6 +466,8 @@ function spawnHongGe() {
         2;
 
 
+    // 距离玩家一定距离
+
     const distance =
         Math.min(W, H) *
         0.35;
@@ -487,7 +485,7 @@ function spawnHongGe() {
         distance;
 
 
-    // 保证不会出界
+    // 限制边界
 
     hongGe.x =
         Math.max(
@@ -509,15 +507,14 @@ function spawnHongGe() {
         );
 
 
-    // 分数越高，红哥越快
+    // 分数越高速度越快
 
     hongGe.speed =
         150 +
         score * 7;
 
 
-    hongGe.changeTimer =
-        0;
+    hongGe.changeTimer = 0;
 
 }
 
@@ -533,9 +530,9 @@ function updatePlayer(dt) {
     let dy = 0;
 
 
-    // --------------------------------------------------
+    // ==================================================
     // 键盘
-    // --------------------------------------------------
+    // ==================================================
 
     if (
         keys["w"] ||
@@ -577,27 +574,25 @@ function updatePlayer(dt) {
     }
 
 
-    // --------------------------------------------------
+    // ==================================================
     // 手机摇杆
-    // --------------------------------------------------
+    // ==================================================
 
     if (
         Math.abs(joystickX) > 0.08 ||
         Math.abs(joystickY) > 0.08
     ) {
 
-        dx =
-            joystickX;
+        dx = joystickX;
 
-        dy =
-            joystickY;
+        dy = joystickY;
 
     }
 
 
-    // --------------------------------------------------
+    // ==================================================
     // 标准化
-    // --------------------------------------------------
+    // ==================================================
 
     const length =
         Math.sqrt(
@@ -627,16 +622,15 @@ function updatePlayer(dt) {
     }
 
 
-    // --------------------------------------------------
-    // 限制玩家位置
-    // --------------------------------------------------
+    // ==================================================
+    // 玩家边界
+    // ==================================================
 
     player.x =
         Math.max(
             player.radius,
             Math.min(
-                W -
-                player.radius,
+                W - player.radius,
                 player.x
             )
         );
@@ -646,8 +640,7 @@ function updatePlayer(dt) {
         Math.max(
             90,
             Math.min(
-                H -
-                player.radius,
+                H - player.radius,
                 player.y
             )
         );
@@ -661,8 +654,7 @@ function updatePlayer(dt) {
 
 function updateHongGe(dt) {
 
-    hongGe.changeTimer -=
-        dt;
+    hongGe.changeTimer -= dt;
 
 
     // 定期改变方向
@@ -676,6 +668,8 @@ function updateHongGe(dt) {
             Math.random() *
             1.2;
 
+
+        // 远离玩家
 
         let dx =
             hongGe.x -
@@ -748,9 +742,9 @@ function updateHongGe(dt) {
         dt;
 
 
-    // --------------------------------------------------
+    // ==================================================
     // 边界反弹
-    // --------------------------------------------------
+    // ==================================================
 
     if (
         hongGe.x <
@@ -760,8 +754,7 @@ function updateHongGe(dt) {
         hongGe.x =
             hongGe.radius;
 
-        hongGe.dx *=
-            -1;
+        hongGe.dx *= -1;
 
     }
 
@@ -776,8 +769,7 @@ function updateHongGe(dt) {
             W -
             hongGe.radius;
 
-        hongGe.dx *=
-            -1;
+        hongGe.dx *= -1;
 
     }
 
@@ -792,8 +784,7 @@ function updateHongGe(dt) {
             90 +
             hongGe.radius;
 
-        hongGe.dy *=
-            -1;
+        hongGe.dy *= -1;
 
     }
 
@@ -808,8 +799,7 @@ function updateHongGe(dt) {
             H -
             hongGe.radius;
 
-        hongGe.dy *=
-            -1;
+        hongGe.dy *= -1;
 
     }
 
@@ -826,6 +816,8 @@ function checkAttack() {
         return;
     }
 
+
+    // 攻击冷却
 
     if (
         attackCooldown > 0
@@ -844,6 +836,8 @@ function checkAttack() {
         0.35;
 
 
+    // 玩家和红哥距离
+
     const dx =
         player.x -
         hongGe.x;
@@ -861,11 +855,13 @@ function checkAttack() {
         );
 
 
-    // 攻击距离
+    // 攻击范围
 
     const attackDistance =
         110;
 
+
+    // 命中
 
     if (
         distance <=
@@ -891,11 +887,13 @@ function hitHongGe() {
         score;
 
 
-    // 产生攻击特效
+    // 攻击特效
 
     punchEffect =
         0.35;
 
+
+    // 显示文字
 
     showHitText();
 
@@ -943,7 +941,7 @@ function showHitText() {
 
 
 // ======================================================
-// 绘制背景
+// 背景
 // ======================================================
 
 function drawBackground() {
@@ -963,11 +961,10 @@ function drawBackground() {
     ctx.lineWidth = 1;
 
 
-    const grid =
-        50;
+    const grid = 50;
 
 
-    // 竖线
+    // 垂直线
 
     for (
         let x = 0;
@@ -992,7 +989,7 @@ function drawBackground() {
     }
 
 
-    // 横线
+    // 水平线
 
     for (
         let y = 0;
@@ -1025,114 +1022,143 @@ function drawBackground() {
 
 function drawPlayer() {
 
-    // 阴影
+    const maxWidth = 100;
 
-    ctx.beginPath();
-
-    ctx.ellipse(
-        player.x,
-        player.y + 8,
-        28,
-        10,
-        0,
-        0,
-        Math.PI * 2
-    );
+    const maxHeight = 120;
 
 
-    ctx.fillStyle =
-        "rgba(0,0,0,.35)";
+    let width =
+        maxWidth;
+
+    let height =
+        maxHeight;
 
 
-    ctx.fill();
+    // ==================================================
+    // player.jpg 已加载
+    // ==================================================
+
+    if (
+        playerImage.complete &&
+        playerImage.naturalWidth > 0
+    ) {
+
+        // 保持原图比例
+
+        const ratio =
+            playerImage.naturalWidth /
+            playerImage.naturalHeight;
 
 
-    // 身体
-
-    ctx.beginPath();
-
-    ctx.arc(
-        player.x,
-        player.y,
-        player.radius,
-        0,
-        Math.PI * 2
-    );
+        width =
+            maxWidth;
 
 
-    ctx.fillStyle =
-        "#13a7ff";
+        height =
+            width /
+            ratio;
 
 
-    ctx.fill();
+        // 高度限制
+
+        if (
+            height >
+            maxHeight
+        ) {
+
+            height =
+                maxHeight;
 
 
-    // 眼睛
+            width =
+                height *
+                ratio;
 
-    ctx.fillStyle =
-        "white";
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-        player.x - 10,
-        player.y - 6,
-        6,
-        0,
-        Math.PI * 2
-    );
+        }
 
 
-    ctx.arc(
-        player.x + 10,
-        player.y - 6,
-        6,
-        0,
-        Math.PI * 2
-    );
+        // ==================================================
+        // 阴影
+        // ==================================================
+
+        ctx.beginPath();
 
 
-    ctx.fill();
+        ctx.ellipse(
+            player.x,
+            player.y +
+            height / 2 -
+            2,
+            width * 0.30,
+            10,
+            0,
+            0,
+            Math.PI * 2
+        );
 
 
-    // 瞳孔
-
-    ctx.fillStyle =
-        "#111";
+        ctx.fillStyle =
+            "rgba(0,0,0,.35)";
 
 
-    ctx.beginPath();
-
-    ctx.arc(
-        player.x - 10,
-        player.y - 6,
-        2.5,
-        0,
-        Math.PI * 2
-    );
+        ctx.fill();
 
 
-    ctx.arc(
-        player.x + 10,
-        player.y - 6,
-        2.5,
-        0,
-        Math.PI * 2
-    );
+        // ==================================================
+        // 绘制 player.jpg
+        // ==================================================
+
+        ctx.drawImage(
+            playerImage,
+
+            player.x -
+            width / 2,
+
+            player.y -
+            height / 2,
+
+            width,
+
+            height
+        );
+
+    }
+
+    else {
+
+        // 图片加载失败时的备用人物
+
+        ctx.beginPath();
 
 
-    ctx.fill();
+        ctx.arc(
+            player.x,
+            player.y,
+            player.radius,
+            0,
+            Math.PI * 2
+        );
 
 
-    // 名字
+        ctx.fillStyle =
+            "#13a7ff";
+
+
+        ctx.fill();
+
+    }
+
+
+    // ==================================================
+    // 玩家名字
+    // ==================================================
 
     ctx.fillStyle =
         "white";
 
 
     ctx.font =
-        "bold 15px Arial";
+        "bold 16px Arial";
 
 
     ctx.textAlign =
@@ -1142,7 +1168,9 @@ function drawPlayer() {
     ctx.fillText(
         "你",
         player.x,
-        player.y + 50
+        player.y +
+        height / 2 +
+        20
     );
 
 }
@@ -1154,11 +1182,9 @@ function drawPlayer() {
 
 function drawHongGe() {
 
-    const maxWidth =
-        100;
+    const maxWidth = 100;
 
-    const maxHeight =
-        120;
+    const maxHeight = 120;
 
 
     let width =
@@ -1168,9 +1194,9 @@ function drawHongGe() {
         maxHeight;
 
 
-    // --------------------------------------------------
-    // 图片已经加载
-    // --------------------------------------------------
+    // ==================================================
+    // boy.jpg 已加载
+    // ==================================================
 
     if (
         hongGeImage.complete &&
@@ -1193,7 +1219,7 @@ function drawHongGe() {
             ratio;
 
 
-        // 高度超过限制
+        // 高度限制
 
         if (
             height >
@@ -1211,11 +1237,12 @@ function drawHongGe() {
         }
 
 
-        // --------------------------------------------------
+        // ==================================================
         // 阴影
-        // --------------------------------------------------
+        // ==================================================
 
         ctx.beginPath();
+
 
         ctx.ellipse(
             hongGe.x,
@@ -1237,9 +1264,9 @@ function drawHongGe() {
         ctx.fill();
 
 
-        // --------------------------------------------------
-        // 绘制你的 boy.jpg
-        // --------------------------------------------------
+        // ==================================================
+        // 绘制 boy.jpg
+        // ==================================================
 
         ctx.drawImage(
             hongGeImage,
@@ -1259,10 +1286,10 @@ function drawHongGe() {
 
     else {
 
-        // 图片加载失败时
-        // 使用红色圆形备用
+        // 图片加载失败时备用
 
         ctx.beginPath();
+
 
         ctx.arc(
             hongGe.x,
@@ -1282,9 +1309,9 @@ function drawHongGe() {
     }
 
 
-    // --------------------------------------------------
+    // ==================================================
     // 红哥名字
-    // --------------------------------------------------
+    // ==================================================
 
     ctx.fillStyle =
         "white";
@@ -1365,7 +1392,7 @@ function drawPunchEffect() {
 
 
 // ======================================================
-// 主游戏循环
+// 游戏主循环
 // ======================================================
 
 function gameLoop(time) {
@@ -1388,7 +1415,7 @@ function gameLoop(time) {
         time;
 
 
-    // 防止页面切换回来后时间过大
+    // 防止切后台后时间过大
 
     dt =
         Math.min(
@@ -1414,7 +1441,7 @@ function gameLoop(time) {
     drawBackground();
 
 
-    // 游戏运行中
+    // 游戏运行
 
     if (gameRunning) {
 
@@ -1442,6 +1469,8 @@ function gameLoop(time) {
     drawPunchEffect();
 
 
+    // 下一帧
+
     requestAnimationFrame(
         gameLoop
     );
@@ -1449,7 +1478,9 @@ function gameLoop(time) {
 }
 
 
-// 启动游戏循环
+// ======================================================
+// 启动游戏
+// ======================================================
 
 requestAnimationFrame(
     gameLoop
