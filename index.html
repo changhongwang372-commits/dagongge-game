@@ -2,7 +2,6 @@
 <html lang="zh-CN">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -16,14 +15,13 @@
     <title>追上红哥就打</title>
 
     <link rel="stylesheet" href="style.css">
-
 </head>
 
 <body>
 
 <div id="game">
 
-    <!-- 顶部 -->
+    <!-- 顶部信息 -->
     <div class="top-bar">
 
         <div class="title">
@@ -38,26 +36,23 @@
     </div>
 
 
-    <!-- 游戏画布 -->
+    <!-- 游戏画面 -->
     <canvas id="gameCanvas"></canvas>
 
 
     <!-- 命中提示 -->
     <div id="message">
-        💥 打中了！
+        💥 打中了！ +1
     </div>
 
 
-    <!-- 开始按钮 -->
+    <!-- 开始游戏 -->
     <button id="startButton">
         开始游戏
     </button>
 
 
-    <!-- ========================= -->
     <!-- 手机虚拟摇杆 -->
-    <!-- ========================= -->
-
     <div
         id="joystick"
         class="joystick"
@@ -71,18 +66,17 @@
     </div>
 
 
-    <!-- ========================= -->
     <!-- 手机攻击按钮 -->
-    <!-- ========================= -->
-
     <button
         id="attackButton"
         class="attack-button"
+        type="button"
     >
         👊
     </button>
 
 </div>
+
 
 <script src="game.js"></script>
 
