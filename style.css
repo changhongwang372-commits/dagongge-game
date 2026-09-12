@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>追上红哥就打</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div id="game">
+
+    <div class="top-bar">
+        <div class="title">🥊 追上红哥就打</div>
+
+        <div class="score">
+            得分：<span id="score">0</span>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="message">
+        追上红哥！
+    </div>
+
+    <!-- 手机控制 -->
+    <div id="mobileControl">
+
+        <button id="up">▲</button>
+
+        <div class="middle">
+            <button id="left">◀</button>
+            <button id="down">▼</button>
+            <button id="right">▶</button>
+        </div>
+
+    </div>
+
+    <!-- 开始按钮 -->
+    <button id="startButton">
+        开始游戏
+    </button>
+
+</div>
+
+<script src="game.js"></script>
+
+</body>
+</html>
