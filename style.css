@@ -6,33 +6,63 @@
 
 html,
 body {
+
     width: 100%;
     height: 100%;
+
     overflow: hidden;
+
     background: #111;
-    font-family: Arial, "Microsoft YaHei", sans-serif;
-}
 
-#game {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-    background:
-        radial-gradient(circle at center, #283048, #111827);
-}
+    font-family:
+        Arial,
+        "Microsoft YaHei",
+        sans-serif;
 
-#gameCanvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
     touch-action: none;
 }
 
-.top-bar {
+
+#game {
+
+    position: relative;
+
+    width: 100vw;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #29354f,
+            #10131c
+        );
+}
+
+
+#gameCanvas {
+
     position: absolute;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    touch-action: none;
+}
+
+
+/* =========================
+   顶部
+========================= */
+
+.top-bar {
+
+    position: absolute;
+
     left: 0;
     top: 0;
 
@@ -41,36 +71,57 @@ body {
     padding: 18px 25px;
 
     display: flex;
+
     justify-content: space-between;
     align-items: center;
 
-    z-index: 10;
+    z-index: 20;
 
     color: white;
+
+    pointer-events: none;
+}
+
+
+.title {
+
+    font-size: 24px;
+
+    font-weight: bold;
+
+    text-shadow:
+        0 3px 8px
+        rgba(0,0,0,.5);
+}
+
+
+.score {
+
+    font-size: 22px;
 
     font-weight: bold;
 }
 
-.title {
-    font-size: 24px;
-    text-shadow: 0 3px 8px rgba(0,0,0,.5);
-}
 
-.score {
-    font-size: 22px;
-}
+/* =========================
+   命中提示
+========================= */
 
 #message {
+
     position: absolute;
 
     left: 50%;
     top: 50%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%)
+        scale(1);
 
     color: white;
 
     font-size: 45px;
+
     font-weight: bold;
 
     text-shadow:
@@ -81,8 +132,17 @@ body {
 
     opacity: 0;
 
-    z-index: 20;
+    z-index: 50;
+
+    transition:
+        opacity .15s,
+        transform .15s;
 }
+
+
+/* =========================
+   开始游戏
+========================= */
 
 #startButton {
 
@@ -91,90 +151,225 @@ body {
     left: 50%;
     top: 58%;
 
-    transform: translate(-50%, -50%);
+    transform:
+        translate(-50%, -50%);
 
-    padding: 16px 40px;
+    padding:
+        16px 40px;
 
     border: none;
+
     border-radius: 999px;
 
-    background: #ff3030;
+    background:
+        linear-gradient(
+            135deg,
+            #ff3030,
+            #d50000
+        );
 
     color: white;
 
     font-size: 24px;
+
     font-weight: bold;
 
     cursor: pointer;
 
-    box-shadow:
-        0 8px 25px rgba(255,0,0,.4);
+    z-index: 40;
 
-    z-index: 30;
+    box-shadow:
+        0 8px 30px
+        rgba(255,0,0,.45);
 }
+
 
 #startButton:active {
-    transform: translate(-50%, -50%) scale(.95);
+
+    transform:
+        translate(-50%, -50%)
+        scale(.94);
 }
 
-#mobileControl {
+
+/* =========================
+   虚拟摇杆
+========================= */
+
+.joystick {
 
     position: absolute;
 
-    bottom: 30px;
-    left: 30px;
+    left: 28px;
+    bottom: 28px;
 
-    z-index: 30;
+    width: 145px;
+    height: 145px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.12);
+
+    border:
+        2px solid
+        rgba(255,255,255,.25);
+
+    backdrop-filter:
+        blur(8px);
+
+    -webkit-backdrop-filter:
+        blur(8px);
+
+    z-index: 60;
 
     display: none;
+
+    touch-action: none;
+
+    user-select: none;
 }
 
-#mobileControl button {
 
-    width: 65px;
-    height: 65px;
+.joystick::before {
 
-    border: none;
+    content: "";
 
-    border-radius: 18px;
+    position: absolute;
 
-    background: rgba(255,255,255,.2);
+    left: 50%;
+    top: 50%;
+
+    width: 8px;
+    height: 8px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.25);
+}
+
+
+.joystick-knob {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 68px;
+    height: 68px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,.35);
+
+    border:
+        2px solid
+        rgba(255,255,255,.65);
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.3);
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   攻击按钮
+========================= */
+
+.attack-button {
+
+    position: absolute;
+
+    right: 30px;
+    bottom: 40px;
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 50%;
+
+    border:
+        3px solid
+        rgba(255,255,255,.5);
+
+    background:
+        linear-gradient(
+            135deg,
+            #ff4949,
+            #c90000
+        );
 
     color: white;
 
-    font-size: 25px;
+    font-size: 43px;
 
-    backdrop-filter: blur(8px);
+    box-shadow:
+        0 8px 30px
+        rgba(255,0,0,.45);
 
-    margin: 4px;
+    z-index: 60;
+
+    display: none;
 
     touch-action: none;
+
+    user-select: none;
 }
 
-#mobileControl button:active {
-    background: rgba(255,60,60,.7);
+
+.attack-button:active {
+
+    transform: scale(.88);
+
+    background:
+        #ff2020;
 }
 
-.middle {
-    display: flex;
-    align-items: center;
-}
+
+/* =========================
+   手机模式
+========================= */
 
 @media (max-width: 768px) {
 
     .title {
+
         font-size: 18px;
     }
+
 
     .score {
+
         font-size: 18px;
     }
 
-    #mobileControl {
+
+    .joystick {
+
         display: block;
     }
 
-    #message {
-        font-size: 38px;
+
+    .attack-button {
+
+        display: block;
     }
+
+
+    #message {
+
+        font-size: 35px;
+    }
+
 }
